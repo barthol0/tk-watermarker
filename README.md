@@ -11,8 +11,11 @@ Cross-platform GUI tool for watermarking `pdf` files.
 
 ## Installation:
 `git clone https://github.com/barthol0/tk-watermarker.git`
+
 `cd tk-watermarker`
+
 `pipenv shell`
+
 `pipenv install`
 
 ## How to use:
