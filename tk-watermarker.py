@@ -10,30 +10,28 @@ from reportlab.pdfgen import canvas
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
 root = Tk()
-# root.config(height=500, width=500)
-# root.geometry('500x500')
 root.title("Tk-watermarker")
 random_number = StringVar()
 
 
 def select_directory():
     directory_selected = filedialog.askdirectory()
-    e4.delete(0, END)
-    e4.insert(0, directory_selected)
+    output_entry.delete(0, END)
+    output_entry.insert(0, directory_selected)
     return
 
 
 def select_file():
     file_selected = filedialog.askopenfilename(
         filetypes=(("PDF documents", ".pdf"),))
-    e3.delete(0, END)
-    e3.insert(0, file_selected)
+    file_entry.delete(0, END)
+    file_entry.insert(0, file_selected)
     return
 
 
 def generate_watermark_text():
-    name = e1.get()
-    surname = e2.get()
+    name = name_entry.get()
+    surname = surname_entry.get()
 
     random_number_tmp = random.randint(100000000, 999999999)
     random_number.set(random_number_tmp)
@@ -46,11 +44,14 @@ def generate_watermark_text():
 def put_watermark():
 
     watermark_text = generate_watermark_text()
-    input_file_path = e3.get()
+    input_file_path = file_entry.get()
     output_file_name = ntpath.basename(
-        e3.get())[:-4] + "_" + watermark_text + ".pdf"
-    output_file_path = e4.get() + "/" + output_file_name
-    output_file_path = output_file_path.replace('/', '\\')
+        file_entry.get())[:-4] + "_" + watermark_text + ".pdf"
+    output_file_path = output_entry.get() + "/" + output_file_name
+
+    if sys.platform == "win32":
+        output_file_path = output_file_path.replace('/', '\\')
+
     tmp_file_name = "temp.pdf"
 
     c = canvas.Canvas(tmp_file_name)
@@ -84,7 +85,8 @@ def put_watermark():
 
 def save_in_csv():
 
-    data = [e1.get(), e2.get(), random_number.get(), datetime.datetime.now()]
+    data = [name_entry.get(), surname_entry.get(), random_number.get(),
+            datetime.datetime.now()]
     with open("db_wmk.csv", "a", newline="\n", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(data)
@@ -103,15 +105,15 @@ Label(step, text="File:", font="Arial 12").grid(
 Label(step, text="Output location:", font="Arial 12").grid(
     row=3, sticky='E', padx=5, pady=2)
 
-e1 = Entry(step, font="Arial 12")
-e2 = Entry(step, font="Arial 12")
-e3 = Entry(step, font="Arial 12")
-e4 = Entry(step, font="Arial 12")
+name_entry = Entry(step, font="Arial 12")
+surname_entry = Entry(step, font="Arial 12")
+file_entry = Entry(step, font="Arial 12")
+output_entry = Entry(step, font="Arial 12")
 
-e1.grid(row=0, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
-e2.grid(row=1, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
-e3.grid(row=2, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
-e4.grid(row=3, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
+name_entry.grid(row=0, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
+surname_entry.grid(row=1, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
+file_entry.grid(row=2, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
+output_entry.grid(row=3, column=1, columnspan=5, sticky="WE", pady=3, padx=5)
 
 Button(step, text="Open file...", width=10, font="Arial 8 ",
        command=select_file).grid(row=2, column=7, sticky=E, pady=4, padx=5)
