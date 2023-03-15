@@ -4,7 +4,7 @@ import random
 import ntpath
 import csv
 import datetime
-from tkinter import *
+import tkinter
 from tkinter import filedialog
 from reportlab.pdfgen import canvas
 from PyPDF2 import PdfFileWriter, PdfFileReader

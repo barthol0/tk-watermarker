@@ -5,10 +5,11 @@ verify_ssl = true
 
 [dev-packages]
 autopep8 = "*"
+flake8 = "*"
 
 [packages]
 pypdf2 = "*"
 reportlab = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.10"
